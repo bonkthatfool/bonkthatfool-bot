@@ -1,13 +1,14 @@
 import tweepy
 import time
 import random
-import openai
+import os
+import requests
 
 # Twitter API credentials
 bearer_token = "AAAAAAAAAAAAAAAAAAAAAJJH1wEAAAAAbWn0Owivw0YekJBAt0cQptPJVm8%3D9XIYR7ZmfEN71PcmYG6Y18dt8DrG8nFbZrh5MjApIqw17WoNn1"
 
-# OpenAI API key
-openai.api_key = "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"
+# Together AI API key from environment variable
+together_api_key = os.getenv("TOGETHER_API_KEY")
 
 # Connect to Twitter API v2
 client = tweepy.Client(bearer_token=bearer_token)
@@ -15,16 +16,21 @@ client = tweepy.Client(bearer_token=bearer_token)
 # Store the ID of the last tweet we responded to
 last_seen_id = None
 
-# AI prompt and reply function using project-based OpenAI key
+# AI prompt and reply function using Together AI (OpenAI-style)
 def generate_ai_roast(tweet_text):
     prompt = f"Someone tweeted: '{tweet_text}'. Write a funny, savage, crypto-style roast reply."
-    response = openai.chat.completions.create(
-        model="gpt-3.5-turbo",
-        messages=[
+    headers = {
+        "Authorization": f"Bearer {together_api_key}",
+        "Content-Type": "application/json"
+    }
+    data = {
+        "model": "mistralai/Mixtral-8x7B-Instruct-v0.1",
+        "messages": [
             {"role": "user", "content": prompt}
         ]
-    )
-    return response.choices[0].message.content.strip()
+    }
+    response = requests.post("https://api.together.xyz/v1/chat/completions", headers=headers, json=data)
+    return response.json()["choices"][0]["message"]["content"].strip()
 
 # Function to check for mentions and reply
 def check_mentions():
@@ -46,13 +52,18 @@ def check_mentions():
 # Scheduled bonk chaos every 15 minutes
 def scheduled_bonk():
     prompt = "Post a funny, savage crypto-themed tweet that sounds like a sentient memecoin bot roasting everyone."
-    response = openai.chat.completions.create(
-        model="gpt-3.5-turbo",
-        messages=[
+    headers = {
+        "Authorization": f"Bearer {together_api_key}",
+        "Content-Type": "application/json"
+    }
+    data = {
+        "model": "mistralai/Mixtral-8x7B-Instruct-v0.1",
+        "messages": [
             {"role": "user", "content": prompt}
         ]
-    )
-    tweet = response.choices[0].message.content.strip()
+    }
+    response = requests.post("https://api.together.xyz/v1/chat/completions", headers=headers, json=data)
+    tweet = response.json()["choices"][0]["message"]["content"].strip()
     try:
         client.create_tweet(text=tweet)
         print("🕒 Scheduled chaos tweeted:", tweet)
@@ -64,3 +75,4 @@ while True:
     check_mentions()
     scheduled_bonk()
     time.sleep(900)  # 15 minutes
+

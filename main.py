@@ -15,10 +15,10 @@ client = tweepy.Client(bearer_token=bearer_token)
 # Store the ID of the last tweet we responded to
 last_seen_id = None
 
-# AI prompt and reply function
+# AI prompt and reply function (updated for OpenAI >=1.0.0)
 def generate_ai_roast(tweet_text):
     prompt = f"Someone tweeted: '{tweet_text}'. Write a funny, savage, crypto-style roast reply."
-    response = openai.ChatCompletion.create(
+    response = openai.chat.completions.create(
         model="gpt-3.5-turbo",
         messages=[
             {"role": "user", "content": prompt}
@@ -46,7 +46,7 @@ def check_mentions():
 # Scheduled bonk chaos every 15 minutes
 def scheduled_bonk():
     prompt = "Post a funny, savage crypto-themed tweet that sounds like a sentient memecoin bot roasting everyone."
-    response = openai.ChatCompletion.create(
+    response = openai.chat.completions.create(
         model="gpt-3.5-turbo",
         messages=[
             {"role": "user", "content": prompt}

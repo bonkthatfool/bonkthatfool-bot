@@ -4,10 +4,10 @@ import random
 import openai
 
 # Twitter API credentials
-api_key = "gLww05TrmL9R2knMQMNlFsDtK"
-api_secret = "1924116169386336256-gvm2r659qCOCNS341d67WVKVyk1bjO"
-access_token = "1924116169386336256-xrjlb0UhA9kDLFvkxlruTd92UDlHSl"
-access_token_secret = "shutJVZwyK0edp1AKR3whVv9yNrfG2mMHYR6OAfkNdxpo"
+api_key = "NJYAWqBICtFXuLvQfKKDxoGwK"
+api_secret = "PQXfZOJWzqIKxU3iMLPfTY7rPg2r2GcK9KsrriOFGVVEBHR8AE"
+access_token = "1924116169386336256-XJUKdtOROTwMFtOGnByJ7OUybBmj4F"
+access_token_secret = "Nyr345cKxe6ofhH9wGvZSvPbfSQp6DQB9z113wIZmEpcv"
 
 # OpenAI API key (replace with your key)
 openai.api_key = "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"

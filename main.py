@@ -1,13 +1,13 @@
 import tweepy
 import time
 import random
-from openai import OpenAI
+import openai
 
 # Twitter API credentials
 bearer_token = "AAAAAAAAAAAAAAAAAAAAAJJH1wEAAAAAbWn0Owivw0YekJBAt0cQptPJVm8%3D9XIYR7ZmfEN71PcmYG6Y18dt8DrG8nFbZrh5MjApIqw17WoNn1"
 
-# OpenAI project-based API key
-client_ai = OpenAI(api_key="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")
+# OpenAI API key
+openai.api_key = "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"
 
 # Connect to Twitter API v2
 client = tweepy.Client(bearer_token=bearer_token)
@@ -18,13 +18,13 @@ last_seen_id = None
 # AI prompt and reply function using project-based OpenAI key
 def generate_ai_roast(tweet_text):
     prompt = f"Someone tweeted: '{tweet_text}'. Write a funny, savage, crypto-style roast reply."
-    response = client_ai.chat.completions.create(
+    response = openai.ChatCompletion.create(
         model="gpt-3.5-turbo",
         messages=[
             {"role": "user", "content": prompt}
         ]
     )
-    return response.choices[0].message.content.strip()
+    return response["choices"][0]["message"]["content"].strip()
 
 # Function to check for mentions and reply
 def check_mentions():
@@ -46,13 +46,13 @@ def check_mentions():
 # Scheduled bonk chaos every 15 minutes
 def scheduled_bonk():
     prompt = "Post a funny, savage crypto-themed tweet that sounds like a sentient memecoin bot roasting everyone."
-    response = client_ai.chat.completions.create(
+    response = openai.ChatCompletion.create(
         model="gpt-3.5-turbo",
         messages=[
             {"role": "user", "content": prompt}
         ]
     )
-    tweet = response.choices[0].message.content.strip()
+    tweet = response["choices"][0]["message"]["content"].strip()
     try:
         client.create_tweet(text=tweet)
         print("🕒 Scheduled chaos tweeted:", tweet)
@@ -64,4 +64,5 @@ while True:
     check_mentions()
     scheduled_bonk()
     time.sleep(900)  # 15 minutes
+
 

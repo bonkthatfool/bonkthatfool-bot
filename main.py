@@ -7,7 +7,7 @@ import openai
 bearer_token = "AAAAAAAAAAAAAAAAAAAAAJJH1wEAAAAAbWn0Owivw0YekJBAt0cQptPJVm8%3D9XIYR7ZmfEN71PcmYG6Y18dt8DrG8nFbZrh5MjApIqw17WoNn1"
 
 # OpenAI API key
-openai.api_key = "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"
+openai.api_key = "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"
 
 # Connect to Twitter API v2
 client = tweepy.Client(bearer_token=bearer_token)

@@ -7,7 +7,7 @@ import openai
 bearer_token = "AAAAAAAAAAAAAAAAAAAAAJJH1wEAAAAAbWn0Owivw0YekJBAt0cQptPJVm8%3D9XIYR7ZmfEN71PcmYG6Y18dt8DrG8nFbZrh5MjApIqw17WoNn1"
 
 # OpenAI API key
-openai.api_key = "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"
+openai.api_key = "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"
 
 # Connect to Twitter API v2
 client = tweepy.Client(bearer_token=bearer_token)
@@ -64,5 +64,3 @@ while True:
     check_mentions()
     scheduled_bonk()
     time.sleep(900)  # 15 minutes
-
-

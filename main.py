@@ -9,9 +9,6 @@ bearer_token = "AAAAAAAAAAAAAAAAAAAAAJJH1wEAAAAAbWn0Owivw0YekJBAt0cQptPJVm8%3D9X
 # OpenAI project-based API key
 openai.api_key = "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"
 
-# Project ID
-project_id = "proj_OuWbXmHyrSTw6SJY2g1guCAZ"
-
 # Connect to Twitter API v2
 client = tweepy.Client(bearer_token=bearer_token)
 
@@ -25,8 +22,7 @@ def generate_ai_roast(tweet_text):
         model="gpt-3.5-turbo",
         messages=[
             {"role": "user", "content": prompt}
-        ],
-        project=project_id
+        ]
     )
     return response.choices[0].message.content.strip()
 
@@ -54,8 +50,7 @@ def scheduled_bonk():
         model="gpt-3.5-turbo",
         messages=[
             {"role": "user", "content": prompt}
-        ],
-        project=project_id
+        ]
     )
     tweet = response.choices[0].message.content.strip()
     try:

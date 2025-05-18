@@ -4,17 +4,16 @@ import random
 import openai
 
 # Twitter API credentials
-api_key = "NJYAWqBICtFXuLvQfKKDxoGwK"
-api_secret = "PQXfZOJWzqIKxU3iMLPfTY7rPg2r2GcK9KsrriOFGVVEBHR8AE"
-access_token = "1924116169386336256-XJUKdtOROTwMFtOGnByJ7OUybBmj4F"
-access_token_secret = "Nyr345cKxe6ofhH9wGvZSvPbfSQp6DQB9z113wIZmEpcv"
+bearer_token = "AAAAAAAAAAAAAAAAAAAAAJJH1wEAAAAAbWn0Owivw0YekJBAt0cQptPJVm8%3D9XIYR7ZmfEN71PcmYG6Y18dt8DrG8nFbZrh5MjApIqw17WoNn1"
 
-# OpenAI API key (replace with your key)
+# OpenAI API key
 openai.api_key = "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"
 
-# Connect to Twitter API
-auth = tweepy.OAuth1UserHandler(api_key, api_secret, access_token, access_token_secret)
-api = tweepy.API(auth)
+# Connect to Twitter API v2
+client = tweepy.Client(bearer_token=bearer_token)
+
+# Store the ID of the last tweet we responded to
+last_seen_id = None
 
 # AI prompt and reply function
 def generate_ai_roast(tweet_text):
@@ -27,18 +26,22 @@ def generate_ai_roast(tweet_text):
     )
     return response.choices[0].message.content.strip()
 
-# Function to check mentions and reply
-last_seen_id = None
+# Function to check for mentions and reply
+def check_mentions():
+    global last_seen_id
+    query = "@bonkthatfool -is:retweet"
+    tweets = client.search_recent_tweets(query=query, since_id=last_seen_id, tweet_fields=['author_id'])
 
-def check_mentions(last_seen_id):
-    mentions = api.mentions_timeline(since_id=last_seen_id, tweet_mode='extended')
-    for mention in reversed(mentions):
-        print(f"🔔 Mention from @{mention.user.screen_name}: {mention.full_text}")
-        response = f"@{mention.user.screen_name} {generate_ai_roast(mention.full_text)}"
-        api.update_status(status=response, in_reply_to_status_id=mention.id)
-        print("✅ Replied with AI roast!")
-        last_seen_id = mention.id
-    return last_seen_id
+    if tweets.data:
+        for tweet in reversed(tweets.data):
+            print(f"🔔 Mention from user {tweet.author_id}: {tweet.text}")
+            roast = generate_ai_roast(tweet.text)
+            try:
+                client.create_tweet(in_reply_to_tweet_id=tweet.id, text=roast)
+                print("✅ Replied with AI roast!")
+                last_seen_id = tweet.id
+            except Exception as e:
+                print("❌ Error replying:", e)
 
 # Scheduled bonk chaos every 15 minutes
 def scheduled_bonk():
@@ -50,11 +53,14 @@ def scheduled_bonk():
         ]
     )
     tweet = response.choices[0].message.content.strip()
-    api.update_status(status=tweet)
-    print("🕒 Scheduled chaos tweeted:", tweet)
+    try:
+        client.create_tweet(text=tweet)
+        print("🕒 Scheduled chaos tweeted:", tweet)
+    except Exception as e:
+        print("❌ Failed to post scheduled tweet:", e)
 
 # Main loop
 while True:
-    last_seen_id = check_mentions(last_seen_id)
+    check_mentions()
     scheduled_bonk()
     time.sleep(900)  # 15 minutes

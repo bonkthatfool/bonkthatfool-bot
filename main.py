@@ -18,13 +18,13 @@ last_seen_id = None
 # AI prompt and reply function using project-based OpenAI key
 def generate_ai_roast(tweet_text):
     prompt = f"Someone tweeted: '{tweet_text}'. Write a funny, savage, crypto-style roast reply."
-    response = openai.ChatCompletion.create(
+    response = openai.chat.completions.create(
         model="gpt-3.5-turbo",
         messages=[
             {"role": "user", "content": prompt}
         ]
     )
-    return response["choices"][0]["message"]["content"].strip()
+    return response.choices[0].message.content.strip()
 
 # Function to check for mentions and reply
 def check_mentions():
@@ -46,13 +46,13 @@ def check_mentions():
 # Scheduled bonk chaos every 15 minutes
 def scheduled_bonk():
     prompt = "Post a funny, savage crypto-themed tweet that sounds like a sentient memecoin bot roasting everyone."
-    response = openai.ChatCompletion.create(
+    response = openai.chat.completions.create(
         model="gpt-3.5-turbo",
         messages=[
             {"role": "user", "content": prompt}
         ]
     )
-    tweet = response["choices"][0]["message"]["content"].strip()
+    tweet = response.choices[0].message.content.strip()
     try:
         client.create_tweet(text=tweet)
         print("🕒 Scheduled chaos tweeted:", tweet)

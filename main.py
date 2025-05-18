@@ -4,10 +4,10 @@ import time
 import random
 
 # Twitter API credentials (προσοχή: είναι δημόσια στο αρχείο σου!)
-api_key = "gLww05TrmL9R2knMQMNlFsDtK"
-api_secret = "1924116169386336256-gvm2r659qCOCNS341d67WVKVyk1bjO"
-access_token = "1924116169386336256-xrjlb0UhA9kDLFvkxlruTd92UDlHSl"
-access_token_secret = "shutJVZwyK0edp1AKR3whVv9yNrfG2mMHYR6OAfkNdxpo"
+api_key = "rw1FJpweGUAPhuIG70odkKx5X"
+api_secret = "uYpjsoqIoKSoZkfBxjR3gd3ERPKGtA0viXu7V2PxDX9zeAdpZZ"
+access_token = "1924116169386336256-p4E3FYTfMWsKXMJ5EP6nXUAz7RmyLt"
+access_token_secret = "hszRrSW2H3dKgixT9mkSbKkLwIL6Qslux7UBAM4sI9Ytq"
 
 # Connect to Twitter API
 auth = tweepy.OAuth1UserHandler(api_key, api_secret, access_token, access_token_secret)
